@@ -1,0 +1,30 @@
+.navbar {
+  display: flex;
+  gap: 12px;
+
+  padding: 16px;
+
+  border-bottom: 1px solid #333;
+}
+
+.nav-link {
+  padding: 10px 16px;
+
+  border-radius: 8px;
+
+  text-decoration: none;
+
+  color: white;
+
+  background: #272a36;
+
+  transition: background 0.2s ease;
+}
+
+.nav-link:hover {
+  background: #3d4254;
+}
+
+.nav-link.active {
+  background: #6200ee;
+}

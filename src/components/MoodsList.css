@@ -1,0 +1,27 @@
+.mood-list {
+  list-style: none;
+
+  display: grid;
+  grid-template-columns: repeat(6, minmax(0, 1fr));
+
+  gap: 30px;
+
+  padding: 0;
+  margin: 0;
+
+  width: 100%;
+}
+
+@media (max-width: 900px) {
+  .mood-list {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 600px) {
+  .mood-list {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+
+    gap: 30px;
+  }
+}
