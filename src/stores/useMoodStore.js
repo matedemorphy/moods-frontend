@@ -1,10 +1,6 @@
 import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
 
-/**
- * Pure projection of persisted moods for list UIs (search / mood filter / sort).
- * Keeps subscription logic out of the store object so Zustand can track deps cleanly.
- */
 export function filterAndSortMoods(moods, { search, filter, sort }) {
   let result = [...moods];
 
@@ -47,7 +43,6 @@ const useMoodStore = create(
 
       clearSelectedMood: () => set({ selectedMood: null }),
 
-      /** Pick a catalog mood for logging, or clear if the same mood is tapped again. */
       toggleMoodSelection: (mood) =>
         set((state) => ({
           selectedMood:
