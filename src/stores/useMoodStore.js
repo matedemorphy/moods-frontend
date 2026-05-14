@@ -1,6 +1,33 @@
 import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
 
+/**
+ * Pure projection of persisted moods for list UIs (search / mood filter / sort).
+ * Keeps subscription logic out of the store object so Zustand can track deps cleanly.
+ */
+export function filterAndSortMoods(moods, { search, filter, sort }) {
+  let result = [...moods];
+
+  if (filter !== 'all') {
+    result = result.filter((m) => m.mood === filter);
+  }
+
+  const q = search.trim().toLowerCase();
+  if (q) {
+    result = result.filter((m) =>
+      m.reason.toLowerCase().includes(q)
+    );
+  }
+
+  if (sort === 'newest') {
+    result.sort((a, b) => b.createdAt - a.createdAt);
+  } else if (sort === 'oldest') {
+    result.sort((a, b) => a.createdAt - b.createdAt);
+  }
+
+  return result;
+}
+
 const useMoodStore = create(
   persist(
     (set, get) => ({
@@ -16,109 +43,46 @@ const useMoodStore = create(
 
       username: '',
 
-      // ─────────────────────────
-      // Actions
-      // ─────────────────────────
+      setSelectedMood: (mood) => set({ selectedMood: mood }),
 
-      setSelectedMood: (mood) =>
-        set({ selectedMood: mood }),
+      clearSelectedMood: () => set({ selectedMood: null }),
 
-      clearSelectedMood: () =>
-        set({ selectedMood: null }),
+      /** Pick a catalog mood for logging, or clear if the same mood is tapped again. */
+      toggleMoodSelection: (mood) =>
+        set((state) => ({
+          selectedMood:
+            state.selectedMood?.name === mood.name ? null : mood,
+        })),
 
-      setSearch: (search) =>
-        set({ search }),
+      setSearch: (search) => set({ search }),
 
-      setFilter: (filter) =>
-        set({ filter }),
+      setFilter: (filter) => set({ filter }),
 
-      setSort: (sort) =>
-        set({ sort }),
+      setSort: (sort) => set({ sort }),
 
-      setUsername: (username) =>
-        set({ username }),
+      setUsername: (username) => set({ username }),
 
       addMood: (reason) => {
-        const {
-          moods,
-          selectedMood,
-          username,
-        } = get();
+        const { moods, selectedMood, username } = get();
 
         if (!selectedMood) return;
 
+        const trimmed = reason.trim();
+        if (!trimmed) return;
+
         const newMood = {
           id: crypto.randomUUID(),
-
           mood: selectedMood.name,
-
           emoji: selectedMood.emoji,
-
-          reason,
-
+          reason: trimmed,
           username,
-
           createdAt: Date.now(),
         };
 
         set({
           moods: [newMood, ...moods],
-
           selectedMood: null,
         });
-      },
-
-      // ─────────────────────────
-      // Selectors
-      // ─────────────────────────
-
-      get filteredMoods() {
-        const {
-          moods,
-          search,
-          filter,
-          sort,
-        } = get();
-
-        let result = [...moods];
-
-        // filter
-
-        if (filter !== 'all') {
-          result = result.filter(
-            (m) => m.mood === filter
-          );
-        }
-
-        // search
-
-        if (search.trim()) {
-          result = result.filter((m) =>
-            m.reason
-              .toLowerCase()
-              .includes(
-                search.toLowerCase()
-              )
-          );
-        }
-
-        // sort
-
-        if (sort === 'newest') {
-          result.sort(
-            (a, b) =>
-              b.createdAt - a.createdAt
-          );
-        }
-
-        if (sort === 'oldest') {
-          result.sort(
-            (a, b) =>
-              a.createdAt - b.createdAt
-          );
-        }
-
-        return result;
       },
     }),
     {

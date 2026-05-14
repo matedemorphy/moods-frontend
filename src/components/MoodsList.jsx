@@ -1,56 +1,30 @@
-import { useState } from 'react';
-
 import './MoodsList.css';
 
 import MoodItem from './MoodItem';
 import Reason from './Reason';
 
-import { moods } from '../data/moods';
+import { moods as moodCatalog } from '../data/moods';
+import useMoodStore from '../stores/useMoodStore';
 
 export default function MoodsList() {
-  const [selectedMood, setSelectedMood] =
-    useState(null);
-
-  const handleMoodItemSelect = (mood) => {
-    setSelectedMood((prev) =>
-      prev?.name === mood.name ? null : mood
-    );
-  };
-
-  const handleReasonSubmit = (reason) => {
-    console.log({
-      mood: selectedMood,
-      reason,
-    });
-
-    setSelectedMood(null);
-  };
-
-  const reasonProps = {
-    onSubmit: handleReasonSubmit,
-    moodName: selectedMood?.name,
-    moodEmoji: selectedMood?.emoji,
-  };
+  const selectedMood = useMoodStore((s) => s.selectedMood);
+  const toggleMoodSelection = useMoodStore((s) => s.toggleMoodSelection);
 
   return (
     <div>
-      <ul className='mood-list'>
-        {moods.map((mood) => (
+      <ul className="mood-list">
+        {moodCatalog.map((mood) => (
           <MoodItem
             key={mood.name}
             emoji={mood.emoji}
             name={mood.name}
-            isSelected={
-              selectedMood?.name === mood.name
-            }
-            onSelect={() =>
-              handleMoodItemSelect(mood)
-            }
+            isSelected={selectedMood?.name === mood.name}
+            onSelect={() => toggleMoodSelection(mood)}
           />
         ))}
       </ul>
 
-      <Reason {...reasonProps} />
+      <Reason />
     </div>
   );
 }

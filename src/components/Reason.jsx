@@ -1,44 +1,61 @@
-import { useState } from 'react';
+import { useId, useState } from 'react';
+
 import './Reason.css';
 
-export default function Reason({
-  moodName,
-  onSubmit,
-}) {
+import useMoodStore from '../stores/useMoodStore';
+
+export default function Reason() {
+  const fieldId = useId();
+
+  const selectedMood = useMoodStore((s) => s.selectedMood);
+  const addMood = useMoodStore((s) => s.addMood);
+
   const [text, setText] = useState('');
 
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    if (!text.trim()) return;
+    const trimmed = text.trim();
+    if (!trimmed || !selectedMood) return;
 
-    onSubmit(text);
-
+    addMood(trimmed);
     setText('');
   };
 
-  if (!moodName) return null;
+  if (!selectedMood) return null;
+
+  const { name, emoji } = selectedMood;
 
   return (
-    <form
-      className='reason-form'
-      onSubmit={handleSubmit}
-    >
-      <input
-        type='text'
-        value={text}
-        placeholder='Why are you feeling this way?'
-        onChange={(e) => setText(e.target.value)}
-        className='reason-input'
-      />
+    <form className="reason-form" onSubmit={handleSubmit}>
+      <p className="reason-context" aria-live="polite">
+        <span aria-hidden="true">{emoji}</span>{' '}
+        You&apos;re feeling{' '}
+        <span className="reason-mood-name">{name}</span>
+      </p>
 
-      <button
-        type='submit'
-        className='reason-button'
-        disabled={!text.trim()}
-      >
-        Submit
-      </button>
+      <div className="reason-fields">
+        <label htmlFor={fieldId} className="visually-hidden">
+          Why are you feeling this way?
+        </label>
+        <input
+          id={fieldId}
+          type="text"
+          value={text}
+          placeholder="Why are you feeling this way?"
+          onChange={(e) => setText(e.target.value)}
+          className="reason-input"
+          autoComplete="off"
+        />
+
+        <button
+          type="submit"
+          className="reason-button"
+          disabled={!text.trim()}
+        >
+          Submit
+        </button>
+      </div>
     </form>
   );
 }
