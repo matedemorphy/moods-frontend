@@ -1,0 +1,77 @@
+---
+description: React Router 7 routing architecture and navigation patterns
+alwaysApply: false
+---
+
+# Routing Architecture
+
+Use modern React Router 7 declarative routing patterns.
+
+Prefer:
+- layout routes
+- nested routes
+- route composition
+
+Avoid deeply coupled routing logic.
+
+---
+
+# Pages
+
+Pages should:
+- orchestrate features
+- compose components
+
+Avoid placing low-level UI or business logic directly inside pages.
+
+---
+
+# Navigation
+
+Use:
+- Link
+- NavLink
+
+for UI navigation.
+
+Use useNavigate only for:
+- redirects
+- post-submit navigation
+- programmatic flows
+
+Avoid using useNavigate for normal navigation links.
+
+---
+
+# Route Structure
+
+Prefer scalable route structure:
+
+router/
+pages/
+layouts/
+
+Keep routing configuration centralized.
+
+---
+
+# URL State
+
+Use URL params and search params intentionally.
+
+Prefer search params for:
+- filters
+- sorting
+- pagination
+- search state
+
+---
+
+# Layouts
+
+Use layout routes for:
+- shared navigation
+- shared wrappers
+- shared page structure
+
+Avoid duplicating layouts across pages.

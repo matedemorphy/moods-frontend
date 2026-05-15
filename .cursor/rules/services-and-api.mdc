@@ -1,0 +1,63 @@
+---
+description: API layer, Axios usage, and service architecture standards
+alwaysApply: false
+---
+
+# API Layer
+
+Never place HTTP requests directly inside React components.
+
+All API communication must live inside:
+- services/
+- api/
+- lib/
+
+---
+
+# Axios Architecture
+
+Centralize Axios configuration in:
+- lib/api.js
+- api/client.js
+
+Avoid creating Axios instances inside individual service files.
+
+---
+
+# Services
+
+Each service file should represent a domain.
+
+Examples:
+- moods.js
+- comments.js
+- users.js
+
+Services should expose reusable async functions.
+
+---
+
+# Responsibilities
+
+Services should:
+- perform requests
+- normalize responses
+- normalize errors
+
+Components should not know HTTP implementation details.
+
+---
+
+# Error Handling
+
+Never throw raw Axios errors directly to UI.
+
+Normalize API errors into predictable Error objects.
+
+---
+
+# Scalability
+
+Assume backend endpoints may evolve.
+
+Keep services loosely coupled from UI implementation.

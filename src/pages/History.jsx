@@ -1,13 +1,10 @@
-//import { useParams } from 'react-router-dom';
-import ActivitiesList from '../components/ActivitiesList';
+import MoodHistoryList from "../components/MoodHistoryList";
 
 export default function History() {
-  //const { userId } = useParams();
-
   return (
     <div>
       <h1>History</h1>
-      <ActivitiesList />
+      <MoodHistoryList />
     </div>
   );
 }

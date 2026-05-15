@@ -1,0 +1,75 @@
+---
+globs: src/components/**/*.{js,jsx,ts,tsx}
+alwaysApply: false
+---
+
+# Component Standards
+
+Prefer functional components.
+
+Keep components focused and reasonably small.
+
+Avoid giant multi-responsibility components.
+
+---
+
+# Props
+
+Use explicit props.
+
+Avoid excessive prop drilling.
+
+Prefer composition when appropriate.
+
+---
+
+# Rendering
+
+Prefer early returns over nested ternaries.
+
+Keep JSX readable.
+
+Extract repeated UI patterns into smaller components.
+
+---
+
+# State
+
+Keep local component state minimal.
+
+Do not duplicate global or server state locally.
+
+---
+
+# Side Effects
+
+Use useEffect intentionally.
+
+Avoid unnecessary effects.
+
+Do not use effects for logic that can run during render.
+
+---
+
+# Accessibility
+
+Prefer semantic HTML.
+
+Use:
+- labels
+- buttons
+- form semantics
+- aria attributes
+
+when appropriate.
+
+---
+
+# Event Handlers
+
+Use descriptive handler names:
+- handleSubmit
+- handleDelete
+- handleSelect
+
+Avoid inline complex logic inside JSX.

@@ -1,0 +1,139 @@
+---
+description: React 19 scalable frontend architecture and senior-level engineering standards
+alwaysApply: false
+---
+
+# Core Philosophy
+
+Prioritize scalable, maintainable, production-oriented React architecture over short or clever solutions.
+
+Assume the project may grow significantly in complexity over time.
+
+Avoid beginner-only patterns that do not scale well in real applications.
+
+Never prioritize beginner simplicity over scalable architecture.
+
+---
+
+# Teaching Style
+
+The user is learning React but already has programming experience.
+
+Explain:
+- why architectural decisions matter
+- responsibilities between layers
+- important tradeoffs briefly
+
+Avoid oversimplified patterns.
+
+Avoid unnecessary enterprise overengineering.
+
+---
+
+# Separation of Concerns
+
+Separate:
+- UI rendering
+- client state
+- server state
+- API communication
+- async state
+- business logic
+- derived state
+
+Avoid mixing multiple responsibilities inside the same component.
+
+---
+
+# Component Design
+
+Prefer:
+- small focused components
+- single responsibility
+- composition over prop drilling
+- reusable hooks
+- reusable utility functions
+
+Avoid:
+- god components
+- deeply nested conditionals
+- duplicated UI logic
+
+Prefer early returns.
+
+---
+
+# Derived State
+
+Do not store derived state unnecessarily.
+
+Compute derived values from source state.
+
+Prefer pure utility functions for:
+- filtering
+- sorting
+- transformations
+- formatting
+
+---
+
+# Naming
+
+Use intention-revealing names.
+
+Prefer:
+- fetchMoodEntries
+- useCommentsQuery
+- createPostMutation
+
+Avoid vague names:
+- data
+- stuff
+- temp
+- handleThings
+
+---
+
+# File Structure
+
+Prefer scalable frontend structure:
+
+src/
+  components/
+  pages/
+  hooks/
+  services/
+  stores/
+  lib/
+  query/
+  router/
+  utils/
+
+Avoid unrelated responsibilities in the same file.
+
+---
+
+# Performance
+
+Do not prematurely optimize.
+
+Prioritize:
+- readability
+- maintainability
+- predictable behavior
+
+before micro-optimizations.
+
+Use memoization only when justified.
+
+---
+
+# Code Quality
+
+Prefer explicit code over clever shortcuts.
+
+Avoid unnecessary abstractions.
+
+Refactor repeated patterns when appropriate.
+
+Write code that remains easy to modify months later.

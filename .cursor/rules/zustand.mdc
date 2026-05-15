@@ -1,0 +1,84 @@
+---
+description: Zustand global client state architecture and best practices
+alwaysApply: false
+---
+
+# Zustand Responsibilities
+
+Use Zustand only for:
+- global client state
+- shared UI state
+- preferences
+- lightweight app state
+
+Do NOT use Zustand for:
+- server-fetched collections
+- async caching
+- backend synchronization
+
+Use TanStack Query for server state.
+
+---
+
+# Store Design
+
+Keep stores small and focused.
+
+Prefer multiple focused stores over giant monolithic stores.
+
+Avoid mixing unrelated concerns in a single store.
+
+---
+
+# Store State
+
+Prefer storing:
+- selected items
+- filters
+- UI preferences
+- auth UI state
+
+Avoid storing derived state unnecessarily.
+
+---
+
+# Actions
+
+Actions should:
+- be explicit
+- have predictable behavior
+- use intention-revealing names
+
+Prefer:
+- setSelectedMood
+- toggleSidebar
+- setFilter
+
+Avoid vague names.
+
+---
+
+# Selectors
+
+Use selectors when consuming store state.
+
+Prefer:
+
+const selectedMood = useMoodStore(
+  (state) => state.selectedMood
+);
+
+Avoid subscribing components to entire stores unnecessarily.
+
+---
+
+# Persistence
+
+Persist only long-lived useful state.
+
+Do not persist:
+- temporary UI state
+- transient selections
+- pending form state
+
+Use partialize when appropriate.

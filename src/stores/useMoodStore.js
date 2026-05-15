@@ -11,14 +11,16 @@ export function filterAndSortMoods(moods, { search, filter, sort }) {
   const q = search.trim().toLowerCase();
   if (q) {
     result = result.filter((m) =>
-      m.reason.toLowerCase().includes(q)
+      String(m.reason ?? '')
+        .toLowerCase()
+        .includes(q)
     );
   }
 
   if (sort === 'newest') {
-    result.sort((a, b) => b.createdAt - a.createdAt);
+    result.sort((a, b) => Number(b.createdAt) - Number(a.createdAt));
   } else if (sort === 'oldest') {
-    result.sort((a, b) => a.createdAt - b.createdAt);
+    result.sort((a, b) => Number(a.createdAt) - Number(b.createdAt));
   }
 
   return result;
@@ -26,9 +28,7 @@ export function filterAndSortMoods(moods, { search, filter, sort }) {
 
 const useMoodStore = create(
   persist(
-    (set, get) => ({
-      moods: [],
-
+    (set) => ({
       selectedMood: null,
 
       search: '',
@@ -56,32 +56,15 @@ const useMoodStore = create(
       setSort: (sort) => set({ sort }),
 
       setUsername: (username) => set({ username }),
-
-      addMood: (reason) => {
-        const { moods, selectedMood, username } = get();
-
-        if (!selectedMood) return;
-
-        const trimmed = reason.trim();
-        if (!trimmed) return;
-
-        const newMood = {
-          id: crypto.randomUUID(),
-          mood: selectedMood.name,
-          emoji: selectedMood.emoji,
-          reason: trimmed,
-          username,
-          createdAt: Date.now(),
-        };
-
-        set({
-          moods: [newMood, ...moods],
-          selectedMood: null,
-        });
-      },
     }),
     {
-      name: 'mood-storage',
+      name: 'mood-ui-storage',
+      partialize: (state) => ({
+        username: state.username,
+        search: state.search,
+        filter: state.filter,
+        sort: state.sort,
+      }),
     }
   )
 );

@@ -1,0 +1,121 @@
+---
+description: TanStack Query architecture and server state management best practices
+alwaysApply: false
+---
+
+# TanStack Query Responsibilities
+
+Use TanStack Query exclusively for:
+- server state
+- async data fetching
+- mutations
+- caching
+- synchronization
+- background refetching
+
+Do not duplicate server state in Zustand or React local state.
+
+---
+
+# Query Architecture
+
+Prefer:
+- dedicated query hooks
+- centralized query keys
+- reusable query functions
+
+Structure:
+
+query/
+hooks/
+services/
+
+---
+
+# Query Keys
+
+Centralize query keys using query key factories.
+
+Example:
+
+export const moodKeys = {
+  all: ['moods'],
+  detail: (id) => ['moods', id],
+};
+
+Avoid inline duplicated query keys.
+
+---
+
+# Queries
+
+Keep query functions inside services/.
+
+Avoid inline fetch logic inside components.
+
+Prefer:
+
+useQuery({
+  queryKey,
+  queryFn,
+})
+
+over manual useEffect fetching.
+
+---
+
+# Mutations
+
+Use mutations for:
+- create
+- update
+- delete
+
+Always handle:
+- pending state
+- error state
+- cache invalidation
+
+Prefer invalidateQueries after successful mutations.
+
+---
+
+# Async UI
+
+Always render:
+- loading states
+- error states
+- empty states
+
+Disable duplicate submissions during pending mutations.
+
+---
+
+# Cache Strategy
+
+Use staleTime intentionally.
+
+Avoid unnecessary refetches.
+
+Do not aggressively invalidate unrelated queries.
+
+---
+
+# Error Handling
+
+Normalize HTTP/API errors in the data layer.
+
+UI components should render meaningful error states.
+
+Avoid silent failures.
+
+---
+
+# Architecture
+
+Components should not know:
+- HTTP details
+- endpoint structure
+- Axios configuration
+
+Keep networking concerns inside services/.

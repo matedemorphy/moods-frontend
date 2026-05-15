@@ -1,0 +1,57 @@
+---
+description: CSS organization and scalable styling architecture
+alwaysApply: false
+---
+
+# CSS Philosophy
+
+Prefer simple, maintainable CSS architecture.
+
+Avoid overengineering styling systems prematurely.
+
+---
+
+# Styling
+
+Prefer:
+- component-scoped CSS
+- predictable class names
+- readable layout structure
+
+Avoid deeply nested selectors.
+
+---
+
+# Layout
+
+Prefer:
+- flexbox
+- grid
+
+for layout systems.
+
+Avoid fragile positioning hacks.
+
+---
+
+# Responsiveness
+
+Design mobile-first when possible.
+
+Ensure layouts adapt cleanly across screen sizes.
+
+---
+
+# Animations
+
+Keep transitions subtle and purposeful.
+
+Avoid excessive animation.
+
+---
+
+# Maintainability
+
+Keep styles close to related components.
+
+Extract repeated patterns into reusable utility classes only when justified.

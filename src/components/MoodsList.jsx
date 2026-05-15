@@ -1,14 +1,28 @@
-import './MoodsList.css';
+import { useEffect } from "react";
+import { useQueryClient } from "@tanstack/react-query";
 
-import MoodItem from './MoodItem';
-import Reason from './Reason';
+import "./MoodsList.css";
 
-import { moods as moodCatalog } from '../data/moods';
-import useMoodStore from '../stores/useMoodStore';
+import MoodItem from "./MoodItem";
+import Reason from "./Reason";
+
+import { moods as moodCatalog } from "../data/moods";
+import { moodEntryKeys } from "../query/moodQueryKeys";
+import { fetchMoodEntries } from "../services/moods";
+import useMoodStore from "../stores/useMoodStore";
 
 export default function MoodsList() {
+  const queryClient = useQueryClient();
+
   const selectedMood = useMoodStore((s) => s.selectedMood);
   const toggleMoodSelection = useMoodStore((s) => s.toggleMoodSelection);
+
+  useEffect(() => {
+    void queryClient.prefetchQuery({
+      queryKey: moodEntryKeys.all,
+      queryFn: fetchMoodEntries,
+    });
+  }, [queryClient]);
 
   return (
     <div>

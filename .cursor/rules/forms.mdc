@@ -1,0 +1,48 @@
+---
+description: React forms, validation, and async form UX best practices
+alwaysApply: false
+---
+
+# Form Design
+
+Use controlled inputs by default.
+
+Keep form state local unless sharing is necessary.
+
+---
+
+# Validation
+
+Validate:
+- empty inputs
+- invalid values
+- duplicate submissions
+
+Prevent invalid submissions early.
+
+---
+
+# Async Forms
+
+Always handle:
+- pending state
+- error state
+- success state
+
+Disable submit buttons during pending mutations.
+
+---
+
+# UX
+
+Provide clear feedback during async operations.
+
+Avoid forms that silently fail.
+
+---
+
+# Architecture
+
+Keep validation and submission logic readable.
+
+Extract reusable form logic when appropriate.
