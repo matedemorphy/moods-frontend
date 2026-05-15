@@ -9,10 +9,14 @@ import "./MoodHistoryList.css";
 function formatWhen(ts) {
   const n = Number(ts);
   if (!Number.isFinite(n)) return "—";
-  return new Date(n).toLocaleString(undefined, {
+  return new Date(n).toLocaleDateString(undefined, {
     dateStyle: "medium",
-    timeStyle: "short",
   });
+}
+
+function moodDateTimeAttr(createdAt) {
+  const n = Number(createdAt);
+  return Number.isFinite(n) ? new Date(n).toISOString() : undefined;
 }
 
 export default function MoodHistoryList() {
@@ -40,25 +44,27 @@ export default function MoodHistoryList() {
   const errorMessage =
     error instanceof Error ? error.message : error ? String(error) : null;
 
+  const showTable = !isPending && !isError && visible.length > 0;
+
   return (
     <section className="mood-history" aria-label="Mood history and filters">
-      <div className="mood-history-toolbar">
-        <label className="mood-history-field">
-          <span className="mood-history-label">Search reasons</span>
+      <div className="mood-history__toolbar">
+        <label className="mood-history__field">
+          <span className="mood-history__label">Search reasons</span>
           <input
             type="search"
             value={search}
             onChange={(e) => setSearch(e.target.value)}
             placeholder="Filter by reason…"
-            className="mood-history-input"
+            className="mood-history__input"
             autoComplete="off"
           />
         </label>
 
-        <label className="mood-history-field">
-          <span className="mood-history-label">Mood</span>
+        <label className="mood-history__field">
+          <span className="mood-history__label">Mood</span>
           <select
-            className="mood-history-select"
+            className="mood-history__select"
             value={filter}
             onChange={(e) => setFilter(e.target.value)}
           >
@@ -71,10 +77,10 @@ export default function MoodHistoryList() {
           </select>
         </label>
 
-        <label className="mood-history-field">
-          <span className="mood-history-label">Sort</span>
+        <label className="mood-history__field">
+          <span className="mood-history__label">Sort</span>
           <select
-            className="mood-history-select"
+            className="mood-history__select"
             value={sort}
             onChange={(e) => setSort(e.target.value)}
           >
@@ -85,7 +91,7 @@ export default function MoodHistoryList() {
 
         <button
           type="button"
-          className="mood-history-refresh"
+          className="mood-history__refresh"
           onClick={() => refetch()}
           disabled={isFetching}
         >
@@ -94,11 +100,13 @@ export default function MoodHistoryList() {
       </div>
 
       {isPending ? (
-        <p className="mood-history-status">Loading your moods…</p>
+        <p className="mood-history__status" role="status">
+          Loading your moods…
+        </p>
       ) : null}
 
       {isError ? (
-        <div className="mood-history-banner mood-history-banner--error">
+        <div className="mood-history__banner mood-history__banner--error" role="alert">
           <p>{errorMessage ?? "Could not load moods."}</p>
           <button type="button" onClick={() => refetch()}>
             Try again
@@ -107,40 +115,90 @@ export default function MoodHistoryList() {
       ) : null}
 
       {!isPending && !isError && visible.length === 0 ? (
-        <p className="mood-history-empty">
+        <p className="mood-history__empty">
           {entries.length === 0
             ? "No mood entries yet. Log one from the home screen."
             : "No entries match your filters."}
         </p>
       ) : null}
 
-      {!isPending && !isError && visible.length > 0 ? (
-        <ul className="mood-history-list">
-          {visible.map((entry) => (
-            <li key={entry.id} className="mood-history-card">
-              <div className="mood-history-card-head">
-                <span className="mood-history-emoji" aria-hidden="true">
-                  {entry.emoji}
-                </span>
-                <span className="mood-history-mood">{entry.mood}</span>
-                <time
-                  className="mood-history-time"
-                  dateTime={
-                    Number.isFinite(Number(entry.createdAt))
-                      ? new Date(Number(entry.createdAt)).toISOString()
-                      : undefined
-                  }
-                >
-                  {formatWhen(entry.createdAt)}
-                </time>
-              </div>
-              <p className="mood-history-reason">{entry.reason}</p>
-              {entry.username ? (
-                <p className="mood-history-user">@{entry.username}</p>
-              ) : null}
-            </li>
-          ))}
-        </ul>
+      {showTable ? (
+        <div className="mood-history__table-wrap">
+          <table className="mood-history__table">
+            <caption className="visually-hidden">
+              Your mood log entries
+            </caption>
+            <thead>
+              <tr>
+                <th scope="col" className="mood-history__th mood-history__th--mood">
+                  Mood
+                </th>
+                <th scope="col" className="mood-history__th mood-history__th--reason">
+                  Reason
+                </th>
+                <th scope="col" className="mood-history__th mood-history__th--when">
+                  When
+                </th>
+                <th scope="col" className="mood-history__th mood-history__th--user">
+                  User
+                </th>
+              </tr>
+            </thead>
+            <tbody>
+              {visible.map((entry) => (
+                <tr key={entry.id} className="mood-history__row">
+                  <td
+                    className="mood-history__cell mood-history__cell--mood"
+                    data-label="Mood"
+                  >
+                    <div className="mood-history__mood-stack">
+                      <span
+                        className="mood-history__mood-emoji"
+                        aria-hidden="true"
+                      >
+                        {entry.emoji}
+                      </span>
+                      <span className="mood-history__mood-name">
+                        {entry.mood}
+                      </span>
+                    </div>
+                  </td>
+                  <td
+                    className="mood-history__cell mood-history__cell--reason"
+                    data-label="Reason"
+                  >
+                    <p className="mood-history__reason">{entry.reason}</p>
+                  </td>
+                  <td
+                    className="mood-history__cell mood-history__cell--when"
+                    data-label="When"
+                  >
+                    <time
+                      className="mood-history__time"
+                      dateTime={moodDateTimeAttr(entry.createdAt)}
+                    >
+                      {formatWhen(entry.createdAt)}
+                    </time>
+                  </td>
+                  <td
+                    className="mood-history__cell mood-history__cell--user"
+                    data-label="User"
+                  >
+                    {entry.username ? (
+                      <span className="mood-history__user">
+                        @{entry.username}
+                      </span>
+                    ) : (
+                      <span className="mood-history__user mood-history__user--empty">
+                        —
+                      </span>
+                    )}
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
       ) : null}
     </section>
   );

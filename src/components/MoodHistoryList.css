@@ -1,154 +1,322 @@
 .mood-history {
+  --mh-accent: #6200ee;
+  --mh-surface: #272a36;
+  --mh-surface-raised: #2f3342;
+  --mh-border: rgba(255, 255, 255, 0.1);
+  --mh-text: rgba(255, 255, 255, 0.92);
+  --mh-muted: rgba(255, 255, 255, 0.58);
+
   display: flex;
   flex-direction: column;
-  gap: 20px;
+  gap: 1.25rem;
+  width: 100%;
+  text-align: left;
 }
 
-.mood-history-toolbar {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: flex-end;
-  gap: 16px;
+.mood-history__toolbar {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(10.5rem, 1fr));
+  gap: 0.875rem 1rem;
+  align-items: end;
+  padding: 1rem 1.125rem;
+  border-radius: 14px;
+  background: var(--mh-surface);
+  border: 1px solid var(--mh-border);
+  box-shadow: 0 4px 24px rgba(0, 0, 0, 0.12);
 }
 
-.mood-history-field {
+.mood-history__field {
   display: flex;
   flex-direction: column;
-  gap: 6px;
-  min-width: 160px;
-  flex: 1 1 160px;
+  gap: 0.375rem;
+  min-width: 0;
 }
 
-.mood-history-label {
-  font-size: 12px;
+.mood-history__label {
+  font-size: 0.6875rem;
+  font-weight: 600;
   text-transform: uppercase;
-  letter-spacing: 0.06em;
-  color: rgba(255, 255, 255, 0.65);
+  letter-spacing: 0.08em;
+  color: var(--mh-muted);
 }
 
-.mood-history-input,
-.mood-history-select {
+.mood-history__input,
+.mood-history__select {
   font: inherit;
-  color: #fff;
-  background: #272a36;
-  border: 1px solid rgba(255, 255, 255, 0.2);
-  border-radius: 8px;
-  padding: 10px 12px;
+  color: var(--mh-text);
+  background: var(--mh-surface-raised);
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  border-radius: 10px;
+  padding: 0.625rem 0.75rem;
+  transition:
+    border-color 0.2s ease,
+    box-shadow 0.2s ease;
 }
 
-.mood-history-input:focus,
-.mood-history-select:focus {
+.mood-history__input::placeholder {
+  color: rgba(255, 255, 255, 0.35);
+}
+
+.mood-history__input:hover,
+.mood-history__select:hover {
+  border-color: rgba(255, 255, 255, 0.22);
+}
+
+.mood-history__input:focus,
+.mood-history__select:focus {
   outline: none;
-  border-color: #6200ee;
-  box-shadow: 0 0 0 2px rgba(98, 0, 238, 0.25);
+  border-color: var(--mh-accent);
+  box-shadow: 0 0 0 3px rgba(98, 0, 238, 0.28);
 }
 
-.mood-history-refresh {
+.mood-history__refresh {
   font: inherit;
+  font-weight: 500;
   cursor: pointer;
-  border-radius: 8px;
-  padding: 10px 16px;
-  border: 1px solid rgba(255, 255, 255, 0.25);
+  border-radius: 10px;
+  padding: 0.625rem 1rem;
+  border: 1px solid rgba(255, 255, 255, 0.2);
   background: transparent;
-  color: #fff;
-  margin-left: auto;
+  color: var(--mh-text);
+  justify-self: end;
+  transition:
+    border-color 0.2s ease,
+    background-color 0.2s ease,
+    color 0.2s ease;
 }
 
-.mood-history-refresh:hover:not(:disabled) {
-  border-color: #6200ee;
+@media (min-width: 640px) {
+  .mood-history__refresh {
+    grid-column: -1;
+  }
+}
+
+.mood-history__refresh:hover:not(:disabled) {
+  border-color: var(--mh-accent);
+  background: rgba(98, 0, 238, 0.12);
   color: #e9d5ff;
 }
 
-.mood-history-refresh:disabled {
-  opacity: 0.6;
+.mood-history__refresh:disabled {
+  opacity: 0.55;
   cursor: not-allowed;
 }
 
-.mood-history-status,
-.mood-history-empty {
+.mood-history__status,
+.mood-history__empty {
   margin: 0;
-  color: rgba(255, 255, 255, 0.75);
+  padding: 1rem 1.125rem;
+  border-radius: 12px;
+  background: var(--mh-surface);
+  border: 1px dashed var(--mh-border);
+  color: var(--mh-muted);
+  text-align: center;
 }
 
-.mood-history-banner {
-  padding: 14px 16px;
-  border-radius: 10px;
+.mood-history__banner {
+  padding: 0.875rem 1rem;
+  border-radius: 12px;
   display: flex;
   flex-wrap: wrap;
   align-items: center;
-  gap: 12px;
+  gap: 0.75rem;
 }
 
-.mood-history-banner--error {
-  background: rgba(198, 40, 40, 0.25);
-  border: 1px solid rgba(244, 67, 54, 0.45);
+.mood-history__banner--error {
+  background: rgba(198, 40, 40, 0.22);
+  border: 1px solid rgba(244, 67, 54, 0.4);
   color: #ffcdd2;
 }
 
-.mood-history-banner p {
+.mood-history__banner p {
   margin: 0;
   flex: 1 1 auto;
 }
 
-.mood-history-banner button {
+.mood-history__banner button {
   font: inherit;
   cursor: pointer;
   border: none;
-  border-radius: 6px;
-  padding: 8px 14px;
-  background: #6200ee;
+  border-radius: 8px;
+  padding: 0.5rem 0.875rem;
+  background: var(--mh-accent);
   color: #fff;
 }
 
-.mood-history-list {
-  list-style: none;
-  margin: 0;
+.mood-history__table-wrap {
+  overflow-x: auto;
+  border-radius: 14px;
+  border: 1px solid var(--mh-border);
+  background: var(--mh-surface);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.18);
+}
+
+.mood-history__table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.9375rem;
+}
+
+.mood-history__table caption.visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
   padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+.mood-history__th {
+  padding: 0.75rem 1rem;
+  font-size: 0.6875rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.07em;
+  color: var(--mh-muted);
+  text-align: left;
+  background: rgba(0, 0, 0, 0.18);
+  border-bottom: 1px solid var(--mh-border);
+}
+
+.mood-history__th--mood {
+  width: 6.5rem;
+  text-align: center;
+}
+
+.mood-history__th--when,
+.mood-history__th--user {
+  white-space: nowrap;
+}
+
+.mood-history__row {
+  transition: background-color 0.15s ease;
+}
+
+.mood-history__row:hover {
+  background: rgba(98, 0, 238, 0.06);
+}
+
+.mood-history__row:not(:last-child) .mood-history__cell {
+  border-bottom: 1px solid var(--mh-border);
+}
+
+.mood-history__cell {
+  padding: 0.875rem 1rem;
+  vertical-align: middle;
+  color: var(--mh-text);
+}
+
+.mood-history__cell--mood {
+  text-align: center;
+  width: 6.5rem;
+}
+
+.mood-history__mood-stack {
   display: flex;
   flex-direction: column;
-  gap: 12px;
-}
-
-.mood-history-card {
-  background: #272a36;
-  border: 1px solid rgba(255, 255, 255, 0.12);
-  border-radius: 12px;
-  padding: 14px 16px;
-}
-
-.mood-history-card-head {
-  display: flex;
-  flex-wrap: wrap;
   align-items: center;
-  gap: 10px;
-  margin-bottom: 8px;
+  justify-content: center;
+  gap: 0.25rem;
+  min-width: 4.5rem;
 }
 
-.mood-history-emoji {
-  font-size: 1.5rem;
+.mood-history__mood-emoji {
+  display: block;
+  font-size: 1.75rem;
   line-height: 1;
 }
 
-.mood-history-mood {
-  text-transform: capitalize;
+.mood-history__mood-name {
+  display: block;
+  font-size: 0.75rem;
   font-weight: 600;
-  color: #fff;
-  flex: 1 1 auto;
+  line-height: 1.2;
+  text-transform: capitalize;
+  color: var(--mh-text);
+  letter-spacing: 0.02em;
 }
 
-.mood-history-time {
-  font-size: 13px;
-  color: rgba(255, 255, 255, 0.55);
-}
-
-.mood-history-reason {
+.mood-history__reason {
   margin: 0;
-  color: rgba(255, 255, 255, 0.9);
-  line-height: 1.45;
+  line-height: 1.5;
+  color: var(--mh-text);
 }
 
-.mood-history-user {
-  margin: 8px 0 0;
-  font-size: 13px;
-  color: rgba(255, 255, 255, 0.5);
+.mood-history__time {
+  font-size: 0.8125rem;
+  color: var(--mh-muted);
+  white-space: nowrap;
+}
+
+.mood-history__user {
+  font-size: 0.8125rem;
+  color: rgba(192, 132, 252, 0.95);
+}
+
+.mood-history__user--empty {
+  color: var(--mh-muted);
+}
+
+@media (max-width: 720px) {
+  .mood-history__table thead {
+    display: none;
+  }
+
+  .mood-history__row {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    grid-template-areas:
+      "mood reason"
+      "mood meta";
+    gap: 0.5rem 0.875rem;
+    padding: 0.875rem 1rem;
+  }
+
+  .mood-history__row:hover {
+    background: rgba(98, 0, 238, 0.08);
+  }
+
+  .mood-history__row:not(:last-child) {
+    border-bottom: 1px solid var(--mh-border);
+  }
+
+  .mood-history__row:not(:last-child) .mood-history__cell {
+    border-bottom: none;
+  }
+
+  .mood-history__cell {
+    display: block;
+    padding: 0;
+  }
+
+  .mood-history__cell--mood {
+    grid-area: mood;
+    align-self: start;
+    padding-top: 0.125rem;
+  }
+
+  .mood-history__cell--reason {
+    grid-area: reason;
+  }
+
+  .mood-history__cell--when,
+  .mood-history__cell--user {
+    grid-area: meta;
+    display: inline-block;
+    vertical-align: baseline;
+    font-size: 0.8125rem;
+  }
+
+  .mood-history__cell--when {
+    margin-right: 0.35rem;
+  }
+
+  .mood-history__cell--when::after {
+    content: "·";
+    margin-left: 0.5rem;
+    color: var(--mh-muted);
+  }
 }

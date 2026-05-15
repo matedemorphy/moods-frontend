@@ -52,10 +52,6 @@ export default function Reason() {
 
   return (
     <form className="reason-form" onSubmit={handleSubmit}>
-      <p className="reason-context" aria-live="polite">
-        <span aria-hidden="true">{emoji}</span> You&apos;re feeling{" "}
-        <span className="reason-mood-name">{name}</span>
-      </p>
 
       {errorMessage ? (
         <p className="reason-error" role="alert">
