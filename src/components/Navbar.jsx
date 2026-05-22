@@ -26,17 +26,6 @@ export default function Navbar() {
       >
         History
       </NavLink>
-
-      <NavLink
-        to='/profile'
-        className={({ isActive }) =>
-          isActive
-            ? 'nav-link active'
-            : 'nav-link'
-        }
-      >
-        Profile
-      </NavLink>
     </nav>
   );
 }

@@ -1,22 +1,25 @@
 import { useMemo } from "react";
-
+import { useResetStoreOnUnmount } from "../hooks/useResetStoreOnUnmount";
 import { useMoodEntriesQuery } from "../hooks/useMoodEntryQueries";
 import { moods as moodCatalog } from "../data/moods";
-import useMoodStore, { filterAndSortMoods } from "../stores/useMoodStore";
+import useHistoryFiltersStore, {
+  filterAndSortMoods
+} from "../stores/useHistoryFiltersStore";
 
 import "./MoodHistoryList.css";
 
 function formatWhen(ts) {
-  const n = Number(ts);
-  if (!Number.isFinite(n)) return "—";
-  return new Date(n).toLocaleDateString(undefined, {
+  if (!ts) return "—";
+
+  return new Date(ts).toLocaleDateString(undefined, {
     dateStyle: "medium",
   });
 }
 
 function moodDateTimeAttr(createdAt) {
-  const n = Number(createdAt);
-  return Number.isFinite(n) ? new Date(n).toISOString() : undefined;
+  if (!createdAt) return undefined;
+
+  return new Date(createdAt).toISOString();
 }
 
 export default function MoodHistoryList() {
@@ -26,20 +29,23 @@ export default function MoodHistoryList() {
     isError,
     error,
     refetch,
-    isFetching,
   } = useMoodEntriesQuery();
 
-  const search = useMoodStore((s) => s.search);
-  const filter = useMoodStore((s) => s.filter);
-  const sort = useMoodStore((s) => s.sort);
-  const setSearch = useMoodStore((s) => s.setSearch);
-  const setFilter = useMoodStore((s) => s.setFilter);
-  const setSort = useMoodStore((s) => s.setSort);
+  const search = useHistoryFiltersStore((s) => s.search);
+  const filter = useHistoryFiltersStore((s) => s.filter);
+  const sort = useHistoryFiltersStore((s) => s.sort);
+  const setSearch = useHistoryFiltersStore((s) => s.setSearch);
+  const setFilter = useHistoryFiltersStore((s) => s.setFilter);
+  const setSort = useHistoryFiltersStore((s) => s.setSort);
 
   const visible = useMemo(
     () => filterAndSortMoods(entries, { search, filter, sort }),
-    [entries, search, filter, sort]
+    [entries, search, filter, sort],
   );
+
+  const reset = useHistoryFiltersStore((s) => s.reset);
+
+  useResetStoreOnUnmount(reset);
 
   const errorMessage =
     error instanceof Error ? error.message : error ? String(error) : null;
@@ -91,11 +97,10 @@ export default function MoodHistoryList() {
 
         <button
           type="button"
-          className="mood-history__refresh"
-          onClick={() => refetch()}
-          disabled={isFetching}
+          className="mood-history__clear"
+          onClick={() => reset()}
         >
-          {isFetching ? "Refreshing…" : "Refresh"}
+          Clear
         </button>
       </div>
 
@@ -106,7 +111,10 @@ export default function MoodHistoryList() {
       ) : null}
 
       {isError ? (
-        <div className="mood-history__banner mood-history__banner--error" role="alert">
+        <div
+          className="mood-history__banner mood-history__banner--error"
+          role="alert"
+        >
           <p>{errorMessage ?? "Could not load moods."}</p>
           <button type="button" onClick={() => refetch()}>
             Try again
@@ -125,22 +133,26 @@ export default function MoodHistoryList() {
       {showTable ? (
         <div className="mood-history__table-wrap">
           <table className="mood-history__table">
-            <caption className="visually-hidden">
-              Your mood log entries
-            </caption>
+            <caption className="visually-hidden">Your mood log entries</caption>
             <thead>
               <tr>
-                <th scope="col" className="mood-history__th mood-history__th--mood">
+                <th
+                  scope="col"
+                  className="mood-history__th mood-history__th--mood"
+                >
                   Mood
                 </th>
-                <th scope="col" className="mood-history__th mood-history__th--reason">
+                <th
+                  scope="col"
+                  className="mood-history__th mood-history__th--reason"
+                >
                   Reason
                 </th>
-                <th scope="col" className="mood-history__th mood-history__th--when">
+                <th
+                  scope="col"
+                  className="mood-history__th mood-history__th--when"
+                >
                   When
-                </th>
-                <th scope="col" className="mood-history__th mood-history__th--user">
-                  User
                 </th>
               </tr>
             </thead>
@@ -175,24 +187,10 @@ export default function MoodHistoryList() {
                   >
                     <time
                       className="mood-history__time"
-                      dateTime={moodDateTimeAttr(entry.createdAt)}
+                      dateTime={moodDateTimeAttr(entry.created_at)}
                     >
-                      {formatWhen(entry.createdAt)}
+                      {formatWhen(entry.created_at)}
                     </time>
-                  </td>
-                  <td
-                    className="mood-history__cell mood-history__cell--user"
-                    data-label="User"
-                  >
-                    {entry.username ? (
-                      <span className="mood-history__user">
-                        @{entry.username}
-                      </span>
-                    ) : (
-                      <span className="mood-history__user mood-history__user--empty">
-                        —
-                      </span>
-                    )}
                   </td>
                 </tr>
               ))}
@@ -203,3 +201,4 @@ export default function MoodHistoryList() {
     </section>
   );
 }
+

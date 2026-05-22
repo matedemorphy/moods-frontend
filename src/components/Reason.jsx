@@ -1,16 +1,14 @@
 import { useId, useState } from "react";
 
 import { useCreateMoodEntryMutation } from "../hooks/useMoodEntryQueries";
-import useMoodStore from "../stores/useMoodStore";
-
 import "./Reason.css";
+import useNewMoodFlowStore from "../stores/useNewMoodFlowStore";
 
 export default function Reason() {
   const fieldId = useId();
 
-  const selectedMood = useMoodStore((s) => s.selectedMood);
-  const username = useMoodStore((s) => s.username);
-  const clearSelectedMood = useMoodStore((s) => s.clearSelectedMood);
+  const selectedMood = useNewMoodFlowStore((s) => s.selectedMood);
+  const clearSelectedMood = useNewMoodFlowStore((s) => s.clearSelectedMood);
 
   const [text, setText] = useState("");
 
@@ -24,11 +22,11 @@ export default function Reason() {
 
     createMoodEntry.mutate(
       {
-        mood: selectedMood.name,
-        emoji: selectedMood.emoji,
-        reason: trimmed,
-        username: username ?? "",
-        createdAt: Date.now(),
+        "mood": {
+          "name": selectedMood.name,
+          "emoji": selectedMood.emoji,
+          "reason": trimmed,
+        }
       },
       {
         onSuccess: () => {
@@ -41,7 +39,7 @@ export default function Reason() {
 
   if (!selectedMood) return null;
 
-  const { name, emoji } = selectedMood;
+  //const { name, emoji } = selectedMood;
   const isPending = createMoodEntry.isPending;
   const errorMessage =
     createMoodEntry.error instanceof Error

@@ -64,7 +64,7 @@ Use selectors when consuming store state.
 
 Prefer:
 
-const selectedMood = useMoodStore(
+const selectedMood = useNewMoodFlowStore(
   (state) => state.selectedMood
 );
 
