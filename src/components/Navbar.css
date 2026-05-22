@@ -1,10 +1,18 @@
 .navbar {
   display: flex;
+  align-items: center;
+  justify-content: space-between;
+
   gap: 12px;
 
   padding: 16px;
 
-  border-bottom: 1px solid #333;
+  border-bottom: 1px solid var(--border);
+}
+
+.navbar-links {
+  display: flex;
+  gap: 12px;
 }
 
 .nav-link {
@@ -14,17 +22,49 @@
 
   text-decoration: none;
 
-  color: white;
+  color: var(--text-h);
 
-  background: #272a36;
+  background: var(--surface);
 
-  transition: background 0.2s ease;
+  transition:
+    background 0.2s ease,
+    color 0.2s ease;
 }
 
 .nav-link:hover {
-  background: #3d4254;
+  background: var(--surface-hover);
 }
 
 .nav-link.active {
-  background: #6200ee;
+  background: var(--accent);
+  color: white;
+}
+
+.theme-toggle {
+  border: none;
+
+  padding: 10px 16px;
+
+  border-radius: 8px;
+
+  cursor: pointer;
+
+  font: inherit;
+
+  color: var(--text-h);
+
+  background: var(--surface);
+
+  transition:
+    background 0.2s ease,
+    color 0.2s ease,
+    transform 0.2s ease;
+}
+
+.theme-toggle:hover {
+  background: var(--surface-hover);
+}
+
+.theme-toggle:active {
+  transform: scale(0.98);
 }

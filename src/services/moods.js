@@ -20,3 +20,15 @@ export async function createMoodEntry(input) {
     throw toHttpError(e);
   }
 }
+
+export async function fetchMoodStats() {
+  try {
+    const { data } = await api.get("/moods/stats");
+
+    return Array.isArray(data)
+      ? data
+      : [];
+  } catch (e) {
+    throw toHttpError(e);
+  }
+}

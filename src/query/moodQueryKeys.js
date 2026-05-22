@@ -4,4 +4,5 @@
  */
 export const moodEntryKeys = {
   all: ['mood-entries'],
+  stats: ["moods", "stats"],
 };

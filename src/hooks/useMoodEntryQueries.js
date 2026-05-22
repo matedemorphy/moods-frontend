@@ -5,12 +5,20 @@ import {
 } from '@tanstack/react-query';
 
 import { moodEntryKeys } from '../query/moodQueryKeys';
-import { createMoodEntry, fetchMoodEntries } from '../services/moods';
+import { createMoodEntry, fetchMoodEntries, fetchMoodStats } from '../services/moods';
 
 export function useMoodEntriesQuery(queryOptions = {}) {
   return useQuery({
     queryKey: moodEntryKeys.all,
     queryFn: fetchMoodEntries,
+    ...queryOptions,
+  });
+}
+
+export function useMoodStatsQuery(queryOptions = {}) {
+  return useQuery({
+    queryKey: moodEntryKeys.stats,
+    queryFn: fetchMoodStats,
     ...queryOptions,
   });
 }
