@@ -42,7 +42,6 @@ export default function MoodBarChart() {
     );
   }
 
-  // 1. Calculamos la serie directamente desde los datos del query
   const series = [
     {
       name: "Entries",
@@ -50,20 +49,17 @@ export default function MoodBarChart() {
     },
   ];
 
-  // 2. Buscamos el valor más alto para asegurar que el eje termine en un número entero redondo
   const maxTotal = data.length > 0 ? Math.max(...data.map((d) => d.total)) : 4;
 
-  // 3. Fusionamos las opciones base con la data dinámica y la corrección del eje X
   const options = {
     ...BASE_OPTIONS,
     xaxis: {
       categories: data.map((item) => `${item.emoji} ${item.name}`),
-      // --- AQUÍ ESTÁ LA SOLUCIÓN AL PROBLEMA ---
-      tickAmount: maxTotal, // Fuerza a que haya exactamente un tick por cada número entero
+      tickAmount: maxTotal,
       min: 0,
-      max: maxTotal, // Evita que ApexCharts invente decimales superiores
+      max: maxTotal,
       labels: {
-        formatter: (val) => Math.round(val), // Asegura visualmente que solo muestre enteros
+        formatter: (val) => Math.round(val),
       },
     },
   };

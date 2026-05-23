@@ -32,7 +32,11 @@ export function useCreateMoodEntryMutation(mutationOptions = {}) {
     ...rest,
     onSettled: async (...args) => {
       await onSettled?.(...args);
-      await queryClient.invalidateQueries({ queryKey: moodEntryKeys.all });
+
+      await Promise.all([
+        queryClient.invalidateQueries({ queryKey: moodEntryKeys.all }),
+        queryClient.invalidateQueries({ queryKey: moodEntryKeys.stats }),
+      ]);
     },
   });
 }

@@ -3,8 +3,9 @@ import { create } from "zustand";
 export function filterAndSortMoods(moods, { search = "", filter = "all", sort = "newest" }) {
   let result = [...moods];
   if (filter !== "all") {
-    result = result.filter((m) => m.mood === filter);
+    result = result.filter((m) => m.name === filter);
   }
+
   const q = search.trim().toLowerCase();
   if (q) {
     result = result.filter((m) =>
