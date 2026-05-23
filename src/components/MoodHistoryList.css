@@ -369,7 +369,7 @@
 .mood-history__user {
   font-size: 0.8125rem;
 
-  color: rgba(192, 132, 252, 0.95);
+  color: rgba(192, 132, 252, 1);
 }
 
 [data-theme="light"] .mood-history__user {
