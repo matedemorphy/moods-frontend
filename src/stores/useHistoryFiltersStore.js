@@ -14,9 +14,13 @@ export function filterAndSortMoods(moods, { search = "", filter = "all", sort = 
     );
   }
   if (sort === "newest") {
-    result.sort((a, b) => Number(b.createdAt) - Number(a.createdAt));
+    result.sort(
+      (a, b) => new Date(b.created_at) - new Date(a.created_at)
+    );
   } else if (sort === "oldest") {
-    result.sort((a, b) => Number(a.createdAt) - Number(b.createdAt));
+    result.sort(
+      (a, b) => new Date(a.created_at) - new Date(b.created_at)
+    );
   }
   return result;
 }
