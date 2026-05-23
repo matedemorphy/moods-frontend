@@ -1,7 +1,7 @@
 import { useMemo } from "react";
 import { useResetStoreOnUnmount } from "../hooks/useResetStoreOnUnmount";
 import { useMoodEntriesQuery } from "../hooks/useMoodEntryQueries";
-import { moods as moodCatalog } from "../data/moods";
+import { moods as moodCatalog } from "../data/Moods";
 import useHistoryFiltersStore, {
   filterAndSortMoods
 } from "../stores/useHistoryFiltersStore";
