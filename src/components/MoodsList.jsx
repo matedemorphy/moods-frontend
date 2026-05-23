@@ -7,7 +7,7 @@ import "./MoodsList.css";
 import MoodItem from "./MoodItem";
 import Reason from "./Reason";
 
-import { moods as moodCatalog } from "../data/moods";
+import { moods as moodCatalog } from "../data/Moods";
 import { moodEntryKeys } from "../query/moodQueryKeys";
 import { fetchMoodEntries } from "../services/moods";
 import useNewMoodFlowStore from "../stores/useNewMoodFlowStore";
